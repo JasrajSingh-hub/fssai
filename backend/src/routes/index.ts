@@ -7,6 +7,7 @@ import hygieneScanRoutes from './hygieneScan.routes';
 import paymentRoutes from './payment.routes';
 import vendorPassRoutes from './vendorPass.routes';
 import { VendorPassController } from '../controllers/vendorPass.controller';
+import { WhatsAppService } from '../services/whatsapp.service';
 import { authenticate } from '../middleware/auth.middleware';
 
 const router = Router();
@@ -48,5 +49,21 @@ router.get('/vendor-pass/:passId', VendorPassController.verifyPass);
 
 // Authenticated demo trigger for the vendor's own pass
 router.post('/vendor-pass/:passId/simulate-expiry', authenticate, VendorPassController.simulateExpiry);
+
+// Test Meta WhatsApp Cloud API endpoint
+router.post('/whatsapp/test', async (req, res) => {
+  const phone = req.body.phone || WhatsAppService.DEFAULT_VENDOR_PHONE;
+  const message = req.body.message || 'FSSAI Seva Kendra: Test WhatsApp message via Meta Cloud API to ' + phone;
+  const sent = await WhatsAppService.sendAutomatedNotification(phone, message);
+  res.json({
+    success: sent,
+    targetPhone: phone,
+    metaConfigured: !!(process.env.META_WHATSAPP_TOKEN && process.env.META_PHONE_NUMBER_ID),
+    clickToChatUrl: WhatsAppService.getClickToChatUrl(phone, message),
+    note: sent
+      ? 'Automated WhatsApp message successfully sent via Meta Cloud API!'
+      : 'Meta API keys missing or test message prepared via Click-to-Chat fallback.',
+  });
+});
 
 export default router;
