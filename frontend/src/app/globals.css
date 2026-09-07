@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --nfssi-ink: #172238;
+  --nfssi-muted: #64748b;
+  --nfssi-panel: #ffffff;
+  --nfssi-line: #e2e8f0;
+  --nfssi-green: #10b981;
+  --nfssi-navy: #172238;
+  --nfssi-warn: #f59e0b;
+}
+
+body {
+  color: var(--nfssi-ink);
+  background-color: #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+input,
+select,
+textarea,
+.font-sans {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+p,
+span,
+label,
+a,
+li,
+div {
+  letter-spacing: -0.01em;
+}
+
+@keyframes scan {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(13rem);
+  }
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.nfssi-page {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  padding: 40px 20px;
+}
+
+.nfssi-container {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.nfssi-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 4px 20px -2px rgba(23, 34, 56, 0.05);
+}
+
+.nfssi-button {
+  border-radius: 8px;
+  background: #172238;
+  color: #ffffff;
+  font-weight: 700;
+  transition: all 160ms ease;
+}
+
+.nfssi-button:hover {
+  background: #243048;
+  box-shadow: 0 4px 12px rgba(23, 34, 56, 0.15);
+}
+
+.nfssi-button:active {
+  transform: scale(0.98);
+}
+
+.nfssi-step-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 6px 14px;
+  color: #065f46;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 768px) {
+  .nfssi-page {
+    padding: 24px 16px;
+  }
+}
