@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   Info,
   MapPin,
+  MessageCircle,
   MessageSquare,
   ShieldCheck,
   Star,
@@ -113,6 +114,7 @@ export default function VerifyPassPage() {
   const [comment, setComment] = useState('');
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const verify = async () => {
@@ -155,6 +157,11 @@ export default function VerifyPassPage() {
     setFeedbackSubmitting(true);
     setFeedbackMessage('Submitting review to public ledger...');
 
+    const targetPhone = '918102098695';
+    const cleanLocation = typeof window !== 'undefined' ? window.location.href : '';
+    const whatsappMsg = `*FSSAI Seva Kendra — Naya Customer Review!*\n\n⭐ Rating: ${selectedRating}/5 Stars\n🏷️ Tags: ${selectedTags.join(', ') || 'General Hygiene'}${comment ? `\n💬 Comment: "${comment}"` : ''}\n\n📍 Stall: ${businessName} (${passData?.passId || passId})\n🔗 Pass Link: ${cleanLocation}`;
+    const directWaUrl = `https://wa.me/${targetPhone}?text=${encodeURIComponent(whatsappMsg)}`;
+
     try {
       const res = await fetch(`${apiUrl}/vendor-pass/${passId}/feedback`, {
         method: 'POST',
@@ -171,9 +178,20 @@ export default function VerifyPassPage() {
       if (json.communityTrust) {
         setPassData((current) => current ? { ...current, communityTrust: json.communityTrust } : current);
       }
-      setFeedbackMessage('✓ Review submitted! Vendor notified via WhatsApp alert.');
+
+      const finalWaUrl = json.whatsapp?.url || directWaUrl;
+      setWhatsappUrl(finalWaUrl);
+      setFeedbackMessage('✓ Review submitted! Vendor WhatsApp alert triggered (+91 8102098695).');
+
+      // Attempt to automatically open WhatsApp chat with vendor
+      if (typeof window !== 'undefined') {
+        try {
+          window.open(finalWaUrl, '_blank');
+        } catch {}
+      }
     } catch (err) {
-      setFeedbackMessage('Thanks. Your check is queued locally while the public ledger reconnects.');
+      setWhatsappUrl(directWaUrl);
+      setFeedbackMessage('✓ Review logged locally. WhatsApp alert ready for vendor (+91 8102098695).');
     } finally {
       setFeedbackSubmitting(false);
     }
@@ -375,6 +393,33 @@ export default function VerifyPassPage() {
               {feedbackMessage && (
                 <div className="mt-5 rounded-md border border-[#bde6dc] bg-[#eafaf6] p-4 font-sans text-sm font-bold text-[#0a7c61]">
                   {feedbackMessage}
+                </div>
+              )}
+
+              {whatsappUrl && (
+                <div className="mt-4 overflow-hidden rounded-xl border-2 border-[#25D366] bg-[#0b1c14] p-4 text-white shadow-lg animate-in fade-in">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#25D366] text-[#0b1c14]">
+                        <MessageCircle className="h-5 w-5 fill-current" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-black uppercase tracking-wider text-[#25D366]">
+                          WhatsApp Alert Ready
+                        </p>
+                        <p className="text-xs font-bold text-white">Vendor Number: +91 8102098695</p>
+                      </div>
+                    </div>
+                    <a
+                      href={whatsappUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#25D366] px-4 py-2.5 text-xs font-black text-[#0b1c14] hover:bg-[#20bd5a] shadow transition"
+                    >
+                      <MessageCircle className="h-4 w-4 fill-current" />
+                      Notify on WhatsApp →
+                    </a>
+                  </div>
                 </div>
               )}
 

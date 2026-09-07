@@ -395,7 +395,7 @@ export default function VendorPassDetailPage() {
                   </span>
                   <div className="flex items-center gap-1.5">
                     <a
-                      href={`https://wa.me/?text=${encodeURIComponent(
+                      href={`https://wa.me/918102098695?text=${encodeURIComponent(
                         `*FSSAI Seva Kendra — Naya Customer Review!*\n\n${activeNotification.message || `Aapke thele ko customer ne ${activeNotification.rating || 5}-star rating di hai!`}\n\nVendor Pass: ${qrTargetUrl}`
                       )}`}
                       target="_blank"
@@ -404,7 +404,7 @@ export default function VendorPassDetailPage() {
                       className="inline-flex items-center gap-1 rounded bg-[#25D366] px-2.5 py-1 text-[11px] font-black text-[#0b1c14] shadow hover:bg-[#20bd5a]"
                     >
                       <MessageCircle className="h-3.5 w-3.5 fill-current" />
-                      Open in WhatsApp
+                      Open WhatsApp (+91 8102098695)
                     </a>
                     <button
                       type="button"

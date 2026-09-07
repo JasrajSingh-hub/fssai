@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { VendorPassService } from '../services/vendorPass.service';
 import { AppError } from '../utils/appError';
 import { VendorPass } from '../models/vendorPass.model';
+import { WhatsAppService } from '../services/whatsapp.service';
 import { randomBytes } from 'crypto';
 
 export class VendorPassController {
@@ -64,6 +65,9 @@ export class VendorPassController {
       pass.communityTrust.averageRating = Math.round((sum / history.length) * 10) / 10;
       pass.communityTrust.verifiedBadge = pass.communityTrust.averageRating >= 4.0;
 
+      const targetPhone = '918102098695';
+      const notificationMsg = `*FSSAI Seva Kendra — Naya Customer Review!*\n\n⭐ Rating: ${rating}/5 Stars\n🏷️ Tags: ${(tags || []).join(', ') || 'General Hygiene'}${comment ? `\n💬 Comment: "${comment}"` : ''}\n\nAapke thele ko naya review mila hai! Live Pass check karein.`;
+      
       pass.latestNotification = {
         title: 'New WhatsApp Customer Review!',
         message: `Aapke thele ko customer ne ${rating}-star rating di hai! Tags: ${(tags || []).join(', ')}`,
@@ -75,10 +79,21 @@ export class VendorPassController {
 
       await pass.save();
 
+      // Trigger background automated notification to target phone (Twilio / CallMeBot if configured)
+      WhatsAppService.sendAutomatedNotification(targetPhone, notificationMsg).catch((err) =>
+        console.warn('[VendorPassController] WhatsApp background dispatch notice:', err)
+      );
+
+      const whatsappUrl = WhatsAppService.getClickToChatUrl(targetPhone, notificationMsg);
+
       res.status(200).json({
         success: true,
         communityTrust: pass.communityTrust,
         notification: pass.latestNotification,
+        whatsapp: {
+          targetPhone,
+          url: whatsappUrl,
+        },
       });
     } catch (error) {
       next(error);

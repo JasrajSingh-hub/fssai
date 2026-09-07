@@ -28,7 +28,7 @@ const SAMPLE_PRESETS = [
   {
     label: 'Chai & Samosa Stall',
     vendorName: 'Ramesh Kumar',
-    mobile: '9876543210',
+    mobile: '8102098695',
     stallName: 'Ramesh Chai & Nashta Center',
     category: 'Tea, Hot Beverages & Snacks',
     location: 'Sector 18 Market, Noida',
@@ -71,7 +71,7 @@ export default function IntakePage() {
 
   // Form Fields
   const [vendorName, setVendorName] = useState<string>('Ramesh Kumar');
-  const [mobileNumber, setMobileNumber] = useState<string>('9876543210');
+  const [mobileNumber, setMobileNumber] = useState<string>('8102098695');
   const [stallName, setStallName] = useState<string>('Ramesh Chai & Nashta Corner');
   const [foodCategory, setFoodCategory] = useState<string>('Tea, Coffee & Street Snacks');
   const [vendingLocation, setVendingLocation] = useState<string>('Sector 18 Market, Ward 14');
@@ -423,10 +423,11 @@ export default function IntakePage() {
                       +91
                     </span>
                     <input
+                      id="mobileNumber"
                       type="tel"
                       value={mobileNumber}
                       onChange={(e) => setMobileNumber(e.target.value)}
-                      placeholder="9876543210"
+                      placeholder="8102098695"
                       className="w-full rounded-r-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>

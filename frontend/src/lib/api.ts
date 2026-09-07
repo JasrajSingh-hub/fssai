@@ -38,7 +38,7 @@ export async function ensureAuthenticated(): Promise<string> {
       name: 'Ramesh Kumar (Demo Vendor)',
       email: `demo_vendor_${Date.now().toString().slice(-4)}@streetsanitation.local`,
       password: 'DemoVendorPassword123!',
-      phone: '9876543210',
+      phone: '8102098695',
     };
 
     const baseUrl = getApiBaseUrl();
